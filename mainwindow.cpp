@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 
 #include <QtWidgets>
+#include <QImage>
 
 MainWindow::MainWindow()
 {

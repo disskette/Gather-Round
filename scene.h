@@ -19,6 +19,8 @@ public:
 
     explicit Scene(QMenu *itemMenu, QObject *parent = nullptr);
 
+    QMenu* menu(){return myItemMenu;}
+
 public slots:
     void setMode(Mode mode);
     void setItemType(Item::ItemType type);

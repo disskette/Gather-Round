@@ -1,4 +1,5 @@
 #include "scene.h"
+#include "map.h"
 
 #include <QGraphicsSceneMouseEvent>
 
@@ -8,6 +9,10 @@ Scene::Scene(QMenu *itemMenu, QObject *parent)
     myItemMenu = itemMenu;
     myMode = MoveItem;
     myItemType = Item::Hero;
+
+    MapItem* map = new MapItem(QPixmap(":/images/dungeon.png"), this->menu());
+    map->setPos(2500, 2500);
+    addItem(map);
 }
 
 void Scene::setMode(Mode mode)
