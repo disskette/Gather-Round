@@ -3,5 +3,6 @@
         <file>images/delete.png</file>
         <file>images/zoomIn.png</file>
         <file>images/zoomOut.png</file>
+        <file>images/dungeon.png</file>
     </qresource>
 </RCC>
