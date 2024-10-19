@@ -2,6 +2,7 @@
 #include "map.h"
 
 #include <QGraphicsSceneMouseEvent>
+#include <cmath>
 
 
 Scene::Scene(QMenu *itemMenu, QObject *parent)
@@ -52,12 +53,27 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
-void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-    if (myMode == MoveItem) {
-        QGraphicsScene::mouseMoveEvent(mouseEvent);
+void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+    QList<QGraphicsItem *> selectedItems = this->selectedItems();
+
+
+    if (!selectedItems.isEmpty()) {
+        QPointF mousePos = event->scenePos();
+
+        const qreal gridStep = 20;
+
+        // Вычисляем новое положение с привязкой к сетке
+        for (QGraphicsItem *item : selectedItems) {
+            QPointF newPos(
+                round(mousePos.x() / gridStep) * gridStep,
+                round(mousePos.y() / gridStep) * gridStep
+                );
+            item->setPos(newPos);
+        }
+        event->accept();
     }
 }
+
 
 void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
