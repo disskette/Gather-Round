@@ -19,6 +19,8 @@ public:
 
     explicit Scene(QMenu *itemMenu, QObject *parent = nullptr);
 
+    double& currScale();
+
 public slots:
     void setMode(Mode mode);
     void setItemType(Item::ItemType type);
@@ -36,6 +38,8 @@ private:
     Item::ItemType myItemType;
     QMenu *myItemMenu; //Меню для работы с объектом одинаково для всех объектов
     Mode myMode;
+
+    double currentScale;
 };
 
 #endif // SCENE_H
