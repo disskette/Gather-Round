@@ -22,6 +22,7 @@ MainWindow::MainWindow()
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(toolBox);
     view = new QGraphicsView(scene);
+    view->setDragMode(QGraphicsView::ScrollHandDrag); //Для перемещения зажимом мышки
     layout->addWidget(view);
 
     QWidget *widget = new QWidget;
