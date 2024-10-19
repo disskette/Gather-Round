@@ -11,13 +11,15 @@ CONFIG += c++17
 HEADERS	    =   mainwindow.h \
     griditem.h \
     item.h \
-    scene.h
+    scene.h \
+    map.h
 
 SOURCES	    =   mainwindow.cpp \
     griditem.cpp \
     item.cpp \
                 main.cpp \
-    scene.cpp
+    scene.cpp \
+    map.cpp
 
 RESOURCES   =	\
     scene.qrc
