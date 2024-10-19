@@ -3,8 +3,9 @@
 
 #include <QGraphicsSceneMouseEvent>
 
+
 Scene::Scene(QMenu *itemMenu, QObject *parent)
-    : QGraphicsScene(parent)
+    : QGraphicsScene(parent), currentScale(1)
 {
     myItemMenu = itemMenu;
     myMode = MoveItem;
@@ -18,6 +19,11 @@ Scene::Scene(QMenu *itemMenu, QObject *parent)
 void Scene::setMode(Mode mode)
 {
     myMode = mode;
+}
+
+double& Scene::currScale()
+{
+    return currentScale;
 }
 
 void Scene::setItemType(Item::ItemType type)
@@ -57,3 +63,4 @@ void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
+

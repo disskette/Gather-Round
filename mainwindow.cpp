@@ -23,6 +23,7 @@ MainWindow::MainWindow()
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(toolBox);
     view = new QGraphicsView(scene);
+    view->setDragMode(QGraphicsView::ScrollHandDrag); //Для перемещения зажимом мышки
     layout->addWidget(view);
 
     QWidget *widget = new QWidget;
@@ -109,6 +110,24 @@ void MainWindow::showItem()
     }
 }
 
+void MainWindow::zoomIn()
+{
+    if(scene->currScale() <= 5)
+    {
+        scene->currScale() *= 1.25;
+        view->scale(1.25, 1.25);
+    }
+}
+
+void MainWindow::zoomOut()
+{
+    if(scene->currScale() >= 0.2)
+    {
+        scene->currScale() /= 1.25; 
+        view->scale(1/1.25, 1/1.25);
+    }
+}
+
 void MainWindow::createToolBox()
 {
     buttonGroup = new QButtonGroup(this);
@@ -154,7 +173,14 @@ void MainWindow::createActions() //TODO: Найти картинки!
 
     showAction = new QAction (QIcon(":/images/show.png"), tr("Show"), this);
     connect(showAction, &QAction::triggered, this, &MainWindow::showItem);
+
+    zoomInAction = new QAction (QIcon(":/images/zoomIn.png"), tr("Zoom in"), this);
+    connect(zoomInAction, &QAction::triggered, this, &MainWindow::zoomIn);
+
+    zoomOutAction = new QAction (QIcon(":/images/zoomOut.png"), tr("Zoom out"), this);
+    connect(zoomOutAction, &QAction::triggered, this, &MainWindow::zoomOut);
 }
+
 
 void MainWindow::createMenus()
 {
@@ -175,6 +201,9 @@ void MainWindow::createToolbars()
 {
     editToolBar = addToolBar(tr("Edit"));
     editToolBar->addAction(deleteAction);
+
+    editToolBar->addAction(zoomInAction);
+    editToolBar->addAction(zoomOutAction);
 }
 
 QWidget *MainWindow::createCellWidget(const QString &text, Item::ItemType type)
@@ -198,3 +227,4 @@ QWidget *MainWindow::createCellWidget(const QString &text, Item::ItemType type)
 
     return widget;
 }
+

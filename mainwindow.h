@@ -37,6 +37,9 @@ private slots:
     void hideItem();
     void showItem();
 
+    void zoomIn();
+    void zoomOut();
+
 private:
     void createToolBox(); 
     void createActions(); // Привязать все QAction к методам
@@ -58,6 +61,9 @@ private:
     QAction* hideAction;
     QAction* showAction;
 
+    QAction* zoomInAction;
+    QAction* zoomOutAction;
+
     QMenu *fileMenu; // Меню действий с файлом (приложением): закрыть. Потенциал на сохранения состояния карты
     QMenu *itemMenu; // Меню действий с объектом: удалить, закрепить...
 
@@ -66,7 +72,7 @@ private:
     QToolBox *toolBox; // Меню слева
     QButtonGroup *buttonGroup; // Кнопки-токены из toolbox
 
-    GridItem* grid; // Главная сетка
+    GridItem* grid; // Главная сетка 
 };
 
 #endif // MAINWINDOW_H
