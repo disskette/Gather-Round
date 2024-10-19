@@ -8,7 +8,7 @@ GridItem::GridItem(qreal cellSide,qreal awidth, qreal aheight, QGraphicsItem *pa
     : QGraphicsItemGroup(parent)
 {
     //Горизонтальные линии
-    for (qreal y=0; y<aheight; y+=cellSide)
+    for (int y=0; y<int(aheight); y+=cellSide)
     {
         QGraphicsLineItem* lineItem = new QGraphicsLineItem(0,y,awidth,y);
         lineItem->setPen(QPen(Qt::black, 2));
@@ -17,7 +17,7 @@ GridItem::GridItem(qreal cellSide,qreal awidth, qreal aheight, QGraphicsItem *pa
     }
 
     //Вертикальные линии
-    for (qreal x=0; x<awidth; x+=cellSide)
+    for (int x=0; x<int(awidth); x+=cellSide)
     {
         QGraphicsLineItem* lineItem = new QGraphicsLineItem(x,0,x,aheight);
         lineItem->setPen(QPen(Qt::black, 2));
