@@ -1,5 +1,5 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'tcpserv.h'
+** Meta object code from reading C++ file 'tcpcli.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.10)
 **
@@ -7,11 +7,11 @@
 *****************************************************************************/
 
 #include <memory>
-#include "tcpserv.h"
+#include "tcpcli.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'tcpserv.h' doesn't include <QObject>."
+#error "The header file 'tcpcli.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.15.10. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -21,32 +21,33 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_Server_t {
-    QByteArrayData data[6];
-    char stringdata0[80];
+struct qt_meta_stringdata_Client_t {
+    QByteArrayData data[7];
+    char stringdata0[76];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_Server_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_Client_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_Server_t qt_meta_stringdata_Server = {
+static const qt_meta_stringdata_Client_t qt_meta_stringdata_Client = {
     {
-QT_MOC_LITERAL(0, 0, 6), // "Server"
-QT_MOC_LITERAL(1, 7, 19), // "onReleaseMouseEvent"
-QT_MOC_LITERAL(2, 27, 0), // ""
-QT_MOC_LITERAL(3, 28, 19), // "handleNewConnection"
-QT_MOC_LITERAL(4, 48, 11), // "readRequest"
-QT_MOC_LITERAL(5, 60, 19) // "serializeSceneToXML"
+QT_MOC_LITERAL(0, 0, 6), // "Client"
+QT_MOC_LITERAL(1, 7, 8), // "sendInfo"
+QT_MOC_LITERAL(2, 16, 0), // ""
+QT_MOC_LITERAL(3, 17, 11), // "onReadyRead"
+QT_MOC_LITERAL(4, 29, 23), // "deserializeSceneFromXML"
+QT_MOC_LITERAL(5, 53, 7), // "xmlData"
+QT_MOC_LITERAL(6, 61, 14) // "onDisconnected"
 
     },
-    "Server\0onReleaseMouseEvent\0\0"
-    "handleNewConnection\0readRequest\0"
-    "serializeSceneToXML"
+    "Client\0sendInfo\0\0onReadyRead\0"
+    "deserializeSceneFromXML\0xmlData\0"
+    "onDisconnected"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_Server[] = {
+static const uint qt_meta_data_Client[] = {
 
  // content:
        8,       // revision
@@ -60,62 +61,59 @@ static const uint qt_meta_data_Server[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   34,    2, 0x0a /* Public */,
+       1,    0,   34,    2, 0x08 /* Private */,
        3,    0,   35,    2, 0x08 /* Private */,
-       4,    0,   36,    2, 0x08 /* Private */,
-       5,    0,   37,    2, 0x08 /* Private */,
+       4,    1,   36,    2, 0x08 /* Private */,
+       6,    0,   39,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,    5,
     QMetaType::Void,
-    QMetaType::QByteArray,
 
        0        // eod
 };
 
-void Server::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        auto *_t = static_cast<Server *>(_o);
+        auto *_t = static_cast<Client *>(_o);
         (void)_t;
         switch (_id) {
-        case 0: _t->onReleaseMouseEvent(); break;
-        case 1: _t->handleNewConnection(); break;
-        case 2: _t->readRequest(); break;
-        case 3: { QByteArray _r = _t->serializeSceneToXML();
-            if (_a[0]) *reinterpret_cast< QByteArray*>(_a[0]) = std::move(_r); }  break;
+        case 0: _t->sendInfo(); break;
+        case 1: _t->onReadyRead(); break;
+        case 2: _t->deserializeSceneFromXML((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 3: _t->onDisconnected(); break;
         default: ;
         }
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject Server::staticMetaObject = { {
+QT_INIT_METAOBJECT const QMetaObject Client::staticMetaObject = { {
     QMetaObject::SuperData::link<QObject::staticMetaObject>(),
-    qt_meta_stringdata_Server.data,
-    qt_meta_data_Server,
+    qt_meta_stringdata_Client.data,
+    qt_meta_data_Client,
     qt_static_metacall,
     nullptr,
     nullptr
 } };
 
 
-const QMetaObject *Server::metaObject() const
+const QMetaObject *Client::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *Server::qt_metacast(const char *_clname)
+void *Client::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_Server.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_Client.stringdata0))
         return static_cast<void*>(this);
-    if (!strcmp(_clname, "Net_subscriber"))
-        return static_cast< Net_subscriber*>(this);
     return QObject::qt_metacast(_clname);
 }
 
-int Server::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int Client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)

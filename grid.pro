@@ -14,6 +14,7 @@ HEADERS	    =   mainwindow.h \
     griditem.h \
     menuwindow.h \
     tcpserv.h \
+    tcpcli.h \
     network_subscription.h \
     item.h \
     scene.h \
@@ -25,6 +26,7 @@ SOURCES	    =   mainwindow.cpp \
     main.cpp \
     menuwindow.cpp \
     tcpserv.cpp \
+    tcpcli.cpp \
     scene.cpp \
     map.cpp
 

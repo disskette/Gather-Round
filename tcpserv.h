@@ -10,10 +10,13 @@
 #include <QDebug>
 #include <QByteArray>
 #include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
-#include "network_subscription.h"
-#include "item.h"
-#include "map.h"
+//#include "network_subscription.h"
+//#include "item.h"
+//#include "map.h"
+//#include "scene.h"
+#include "tcpcli.h"
 
 //! реализовать наблюдателей бля
 
@@ -22,8 +25,12 @@ class Server : public QObject, public Net_subscriber
     Q_OBJECT
 
 public:
-    Server(QGraphicsScene *scene, QObject *parent = nullptr);
+    Server(Scene *scene, QObject *parent = nullptr);
     void SendInfo(); //! override?
+    void deserializeSceneFromXML(const QString &xmlData);
+
+public slots:
+    void onReleaseMouseEvent();
 
 private slots:
     void handleNewConnection();
@@ -34,7 +41,7 @@ private slots:
 
 private:
     QTcpServer *m_server;
-    QGraphicsScene *m_scene;
+    Scene *m_scene;
     QList<QTcpSocket*> m_clients;
 };
 

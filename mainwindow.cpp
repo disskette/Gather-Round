@@ -1,6 +1,7 @@
 #include "item.h"
 #include "scene.h"
 #include "mainwindow.h"
+#include "tcpcli.h"
 
 #include <QtWidgets>
 #include <QImage>
@@ -22,14 +23,24 @@ MainWindow::MainWindow(Role role, const QString &roomId, QWidget *parent)
     grid = new GridItem(50,5000,5000); //Главная сетка
     scene -> addItem(grid);
 
-    //! UNDER CONSTUCTION
+   
+
+    //! UNDER CONSTRUCTION
     if (role == Master) {
         Server *server = new Server(scene); // Создаем сервер Master
         //!
+
+        //!
+        QObject::connect(scene, &Scene::releaseMouseEventOccurred, server, &Server::onReleaseMouseEvent);
+        //!
     } else { // Дурак (клиент)
-       //!
+        qDebug() << "Suda zashli";
+        Client *client = new Client(scene);
+        qDebug() << "Otsuda vishli";
     }
-    //! UNDER CONSTUCTION
+    //! UNDER CONSTRUCTION
+
+    
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     // Добавляем информацию о роли и ID

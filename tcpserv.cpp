@@ -3,7 +3,7 @@
 
 //! реализовать наблюдателей бля
 
-Server::Server(QGraphicsScene *scene, QObject *parent) 
+Server::Server(Scene *scene, QObject *parent) 
         : QObject(parent), m_scene(scene)
     {
         m_server = new QTcpServer(this);
@@ -18,19 +18,31 @@ Server::Server(QGraphicsScene *scene, QObject *parent)
 void Server::handleNewConnection()
     {
         QTcpSocket *clientSocket = m_server->nextPendingConnection();
+        //!
         m_clients.append(clientSocket);
+        //!
         connect(clientSocket, &QTcpSocket::readyRead, this, &Server::readRequest);
         connect(clientSocket, &QTcpSocket::disconnected, clientSocket, &QTcpSocket::deleteLater);
         qDebug() << "New client connected!";
     }
 
-void Server::SendInfo()
+void Server::onReleaseMouseEvent()
 {
+    qDebug() << m_clients.size();
     for (QTcpSocket* cli : m_clients)
     {
+        qDebug() << "ANANAS";
         QByteArray xmlData = serializeSceneToXML();
+        qDebug() << "ANANANAS";
         cli->write(xmlData);
+        qDebug() << "ANANANANAS";
     }
+
+}
+
+void Server::SendInfo()
+{
+   
 }
 
 void Server::readRequest()
@@ -46,7 +58,7 @@ void Server::readRequest()
         }
     }
 
-QByteArray Server::serializeSceneToXML() //! понять как копировать состояние в начале
+QByteArray Server::serializeSceneToXML()
     {
         QByteArray xmlData;
         QXmlStreamWriter xmlWriter(&xmlData);
@@ -71,16 +83,16 @@ QByteArray Server::serializeSceneToXML() //! понять как копиров�
 
                     switch (type){
                         case Item::ItemType::Hero:
-                            xmlWriter.writeAttribute("type", "Hero");
+                            xmlWriter.writeTextElement("type", "Hero");
                             break;
                         case Item::ItemType::Monster:
-                            xmlWriter.writeAttribute("type", "Monster");
+                            xmlWriter.writeTextElement("type", "Monster");
                             break;
                         case Item::ItemType::Weapon:
-                            xmlWriter.writeAttribute("type", "Weapon");
+                            xmlWriter.writeTextElement("type", "Weapon");
                             break;
                         default:
-                            xmlWriter.writeAttribute("type", "Unknown");
+                            xmlWriter.writeTextElement("type", "Unknown");
                             break;
                     }
                     
@@ -89,7 +101,7 @@ QByteArray Server::serializeSceneToXML() //! понять как копиров�
 
                 else if(item->type()==MapItem::Type) //Обнаружили карту
                 {
-                    xmlWriter.writeAttribute("type", "Map");
+                    xmlWriter.writeTextElement("type", "Map");
                 }
 
                 //!
@@ -110,3 +122,63 @@ QByteArray Server::serializeSceneToXML() //! понять как копиров�
         return xmlData;
     }
 
+
+void Server::deserializeSceneFromXML(const QString &xmlData) { 
+    QXmlStreamReader xml(xmlData);
+    
+    while (!xml.atEnd() && !xml.hasError()) {
+        xml.readNext();
+        if (xml.isStartElement() && xml.name() == "Item") {
+            QString type;
+            qreal posX = 0, posY = 0;
+
+            // Read attributes or child elements
+            while (xml.readNextStartElement()) {
+                if (xml.name() == "type") {
+                    type = xml.readElementText();
+                } else if (xml.name() == "PosX") {
+                    posX = xml.readElementText().toDouble();
+                } else if (xml.name() == "PosY") {
+                    posY = xml.readElementText().toDouble();
+                } else {
+                    xml.skipCurrentElement();
+                }
+            }
+ 
+            foreach (QGraphicsItem *item, m_scene->items()) {
+                if (!(item->pos().x() == 0 && item->pos().y() == 0)){
+                    m_scene->removeItem(item);
+                }
+            }
+            
+            if (type != "Map")
+            {
+                Item* item;
+                if (type == "Monster") {
+                    item = new Item(Item::ItemType::Monster, m_scene->menu());
+                } 
+                else if (type == "Hero") {
+                    item = new Item(Item::ItemType::Hero, m_scene->menu());
+                } 
+                else {   
+                    item = new Item(Item::ItemType::Weapon, m_scene->menu());
+                }
+
+                item->setBrush(Qt::transparent);
+                item->setPen(QPen(item->color(), 4));
+                m_scene->addItem(item); //надо проверить название <3
+                item->setPos(posX, posY);
+                //emit itemInserted(item);
+
+            } else if (type == "Map") {
+                    MapItem* map = new MapItem(QPixmap(":/images/dungeon.png"), m_scene->menu());
+                    map->setPos(posX, posY);
+                    m_scene->addItem(map);
+            }
+
+            if (xml.hasError()) {
+                qDebug() << "XML Error:" << xml.errorString();
+            }
+        }
+    }
+}
