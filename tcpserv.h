@@ -12,6 +12,8 @@
 #include <QXmlStreamWriter>
 
 #include "network_subscription.h"
+#include "item.h"
+#include "map.h"
 
 //! реализовать наблюдателей бля
 

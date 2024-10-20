@@ -1,5 +1,6 @@
 #include "tcpserv.h"
 
+
 //! реализовать наблюдателей бля
 
 Server::Server(QGraphicsScene *scene, QObject *parent) 
@@ -25,7 +26,11 @@ void Server::handleNewConnection()
 
 void Server::SendInfo()
 {
-//!
+    for (QTcpSocket* cli : m_clients)
+    {
+        QByteArray xmlData = serializeSceneToXML();
+        cli->write(xmlData);
+    }
 }
 
 void Server::readRequest()
@@ -50,14 +55,53 @@ QByteArray Server::serializeSceneToXML() //! понять как копиров�
         xmlWriter.writeStartDocument();
         xmlWriter.writeStartElement("SceneItems");
 
+
+        Item* circle;
+        Item::ItemType type;
+
         // Iterate through all items in the scene
         foreach (QGraphicsItem *item, m_scene->items()) {
-            xmlWriter.writeStartElement("Item");
-            xmlWriter.writeAttribute("type", item->type() == QGraphicsItem::UserType ? "Custom" : "Standard");
-            xmlWriter.writeTextElement("PosX", QString::number(item->pos().x()));
-            xmlWriter.writeTextElement("PosY", QString::number(item->pos().y()));
-            // Add more properties as needed
-            xmlWriter.writeEndElement(); // End Item
+            if (!(item->pos().x() == 0 && item->pos().y() == 0)){
+                xmlWriter.writeStartElement("Item");
+
+                if(item->type()==Item::Type) //Обнаружили кружок //V
+                {
+                    circle = dynamic_cast<Item*>(item); //Достали кружок. Можем работать
+                    type = circle -> Item::itemType(); //Достали тип кружочка
+
+                    switch (type){
+                        case Item::ItemType::Hero:
+                            xmlWriter.writeAttribute("type", "Hero");
+                            break;
+                        case Item::ItemType::Monster:
+                            xmlWriter.writeAttribute("type", "Monster");
+                            break;
+                        case Item::ItemType::Weapon:
+                            xmlWriter.writeAttribute("type", "Weapon");
+                            break;
+                        default:
+                            xmlWriter.writeAttribute("type", "Unknown");
+                            break;
+                    }
+                    
+
+                }
+
+                else if(item->type()==MapItem::Type) //Обнаружили карту
+                {
+                    xmlWriter.writeAttribute("type", "Map");
+                }
+
+                //!
+                //! делается
+                //!
+                
+                    xmlWriter.writeTextElement("PosX", QString::number(item->pos().x()));
+                    xmlWriter.writeTextElement("PosY", QString::number(item->pos().y()));
+                
+                // Add more properties as needed
+                xmlWriter.writeEndElement(); // End Item
+            }
         }
 
         xmlWriter.writeEndElement(); // End SceneItems
