@@ -1,4 +1,6 @@
 QT       += core gui
+QT += network
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,6 +12,9 @@ CONFIG += c++17
 
 HEADERS	    =   mainwindow.h \
     griditem.h \
+    menuwindow.h \
+    tcpserv.h \
+    network_subscription.h \
     item.h \
     scene.h \
     map.h
@@ -17,7 +22,9 @@ HEADERS	    =   mainwindow.h \
 SOURCES	    =   mainwindow.cpp \
     griditem.cpp \
     item.cpp \
-                main.cpp \
+    main.cpp \
+    menuwindow.cpp \
+    tcpserv.cpp \
     scene.cpp \
     map.cpp
 

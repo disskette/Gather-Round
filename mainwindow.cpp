@@ -5,8 +5,10 @@
 #include <QtWidgets>
 #include <QImage>
 
-MainWindow::MainWindow()
-{
+
+//!
+MainWindow::MainWindow(Role role, const QString &roomId, QWidget *parent) 
+    : QMainWindow(parent), currentRole(role), roomId(roomId) {
     createActions(); // Привязка методов удаления, закрытия и т.д. в QAction для унификации работы со всеми меню
     createToolBox(); // Меню слева с токенами
     createMenus(); 
@@ -19,6 +21,21 @@ MainWindow::MainWindow()
 
     grid = new GridItem(50,5000,5000); //Главная сетка
     scene -> addItem(grid);
+
+    //! UNDER CONSTUCTION
+    if (role == Master) {
+        Server *server = new Server(scene); // Создаем сервер Master
+        //!
+    } else { // Дурак (клиент)
+       //!
+    }
+    //! UNDER CONSTUCTION
+
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    // Добавляем информацию о роли и ID
+    setupUI(mainLayout);
+
+
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(toolBox);
@@ -228,3 +245,18 @@ QWidget *MainWindow::createCellWidget(const QString &text, Item::ItemType type)
     return widget;
 }
 
+void MainWindow::setupUI(QVBoxLayout *parentLayout) {
+    QLabel *roleLabel = new QLabel(this);
+    QLabel *roomIdLabel = new QLabel(this);
+
+    if (currentRole == Master) {
+        roleLabel->setText("Вы создали комнату. Ваша роль: Master");
+    } else {
+        roleLabel->setText("Вы подключились к комнате. Ваша роль: Player");
+    }
+
+    roomIdLabel->setText("ID комнаты: " + roomId);
+
+    parentLayout->addWidget(roleLabel);
+    parentLayout->addWidget(roomIdLabel);
+}
