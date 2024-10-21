@@ -13,17 +13,17 @@ Item::Item(ItemType itemType,QMenu* ContextMenu,
     switch (myItemType) {
     case Monster:
         myColor = Qt::red;
-        path.addEllipse(QPointF(0, 0), 65, 65); //размеры потом поменяем на основе размеров сетки
+        path.addEllipse(QPointF(0, 0), 20, 20); //размеры потом поменяем на основе размеров сетки
         myPolygon = path.toFillPolygon();
         break;
     case Hero:
         myColor = Qt::green;
-        path.addEllipse(QPointF(0, 0), 65, 65);
+        path.addEllipse(QPointF(0, 0), 10, 10);
         myPolygon = path.toFillPolygon();
         break;
     default:
         myColor = Qt::blue;
-        path.addEllipse(QPointF(0, 0), 33, 33);
+        path.addEllipse(QPointF(0, 0), 5, 5);
         myPolygon = path.toFillPolygon();
         break;
     }
