@@ -10,21 +10,23 @@ Client::Client(Scene *scene, QObject *parent)
         //!
         QString ip = "";
         for (int i = 2; i <= 254; ++i) {
-            //QString ip = QString("192.168.0.%1").arg(i);
-            //ip = QString("10.110.124.%1").arg(i);
-            ip = QString("192.168.0.%1").arg(i);
-            
-            qDebug() << "Проверка соединения с" << ip;
-            
-            socket->connectToHost(ip, 5702); 
-            
-            if (socket->waitForConnected(100)) {
-                qDebug() << "Успешное соединение с" << ip;
-                //socket->disconnectFromHost();
-                break;
-            } else {
-                qDebug() << "Не удалось подключиться к" << ip << ":" << socket->errorString();
+            for (int j = 0; i <= 1; ++i) {
+                //QString ip = QString("192.168.0.%1").arg(i);
+                //ip = QString("10.110.124.%1").arg(i);
+                ip = QString("192.168.%2.%1").arg(i).arg(j)
+                
+                qDebug() << "Проверка соединения с" << ip;
+                
+                socket->connectToHost(ip, 5702); 
+                
+                if (socket->waitForConnected(100)) {
+                    qDebug() << "Успешное соединение с" << ip;
+                    //socket->disconnectFromHost();
+                    break;
+                } else {
+                    qDebug() << "Не удалось подключиться к" << ip << ":" << socket->errorString();
 
+                }
             }
         }
 
