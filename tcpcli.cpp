@@ -13,7 +13,7 @@ Client::Client(Scene *scene, QObject *parent)
             for (int j = 0; j <= 1; ++j) {
                 //QString ip = QString("192.168.0.%1").arg(i);
                 //ip = QString("10.110.124.%1").arg(i);
-                ip = QString("192.168.%2.%1").arg(i).arg(j)
+                ip = QString("192.168.%2.%1").arg(i).arg(j);
                 
                 qDebug() << "Проверка соединения с" << ip;
                 
