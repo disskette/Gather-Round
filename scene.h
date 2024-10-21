@@ -4,6 +4,8 @@
 #include "item.h"
 
 #include <QGraphicsScene>
+#include <QDebug>
+
 
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
@@ -30,6 +32,7 @@ public slots:
 signals:
     void itemInserted(Item *item);
     void itemSelected(QGraphicsItem *item);
+    void releaseMouseEventOccurred(); //!new
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
