@@ -103,6 +103,7 @@ void Client::deserializeSceneFromXML(const QString &xmlData) {
         xml.readNext();
         if (xml.isStartElement() && xml.name() == "Item") {
             QString type;
+            QString flag;
             qreal posX = 0, posY = 0;
 
             // Read attributes or child elements
@@ -140,12 +141,22 @@ void Client::deserializeSceneFromXML(const QString &xmlData) {
                 m_scene->addItem(item); //надо проверить название <3
                 item->setPos(posX, posY);
                 //emit itemInserted(item);
+                if (flag == "true"){
+                    item->setFlag(QGraphicsItem::ItemIsMovable, true);
+                }else{
+                    item->setFlag(QGraphicsItem::ItemIsMovable, false);
+                }
 
             } else if (type == "Map") {
                     qDebug() << "Sosi zopu";
                     MapItem* map = new MapItem(QPixmap(":/images/dungeon.png"), m_scene->menu());
                     map->setPos(posX, posY);
                     m_scene->addItem(map);
+                    if (flag == "true"){
+                        map->setFlag(QGraphicsItem::ItemIsMovable, true);
+                    }else{
+                        map->setFlag(QGraphicsItem::ItemIsMovable, false);
+                    }
             }
 
             if (xml.hasError()) {
