@@ -28,8 +28,6 @@ private slots:
     void deleteItem();
     void pinItem();
     void unpinItem();
-    void hideItem();
-    void showItem();
     void zoomIn();
     void zoomOut();
 private:
@@ -40,25 +38,30 @@ private:
     QWidget *createCellWidget(const QString &text, Item::ItemType type); // Виджет токена в toolbox
     Scene *scene;
     QGraphicsView *view;
-    QAction *exitAction; 
+    
+    QAction *exitAction;
+
     QAction *addAction;
     QAction *deleteAction;
     QAction *pinAction;
     QAction *unpinAction;
-    QAction* hideAction;
-    QAction* showAction;
     QAction* zoomInAction;
     QAction* zoomOutAction;
+
     QMenu *fileMenu; // Меню действий с файлом (приложением): закрыть. Потенциал на сохранения состояния карты
     QMenu *itemMenu; // Меню действий с объектом: удалить, закрепить...
+
     QToolBar *editToolBar; // Находится под File, Item в окне приложения
+
     QToolBox *toolBox; // Меню слева
+
     QButtonGroup *buttonGroup; // Кнопки-токены из toolbox
+
     GridItem* grid; // Главная сетка 
 
     Role currentRole;  // Хранит роль пользователя
     QString roomId;
 
-    void setupUI(QVBoxLayout *parentLayout);    // Метод для настройки интерфейса в зависимости от роли
+    //void setupUI(QVBoxLayout *parentLayout);    // Метод для настройки интерфейса в зависимости от роли
 };
 #endif // MAINWINDOW_H
