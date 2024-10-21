@@ -45,6 +45,9 @@ private:
     Mode myMode;
 
     double currentScale;
+
+    QPointF offset; // Смещение между позицией курсора и позицией элемента
+    bool offset_changed; //Выставлено ли уже смещение
 };
 
 #endif // SCENE_H

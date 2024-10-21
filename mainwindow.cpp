@@ -20,7 +20,7 @@ MainWindow::MainWindow(Role role, const QString &roomId, QWidget *parent)
     connect(scene, &Scene::itemInserted, this, &MainWindow::itemInserted);
     createToolbars(); 
 
-    grid = new GridItem(50,5000,5000); //Главная сетка
+    grid = new GridItem(20,5000,5000); //Главная сетка
     scene -> addItem(grid);
 
    
@@ -34,17 +34,16 @@ MainWindow::MainWindow(Role role, const QString &roomId, QWidget *parent)
         QObject::connect(scene, &Scene::releaseMouseEventOccurred, server, &Server::onReleaseMouseEvent);
         //!
     } else { // Дурак (клиент)
-        qDebug() << "Suda zashli";
+        //qDebug() << "Suda zashli";
         Client *client = new Client(scene);
-        qDebug() << "Otsuda vishli";
+        //qDebug() << "Otsuda vishli";
     }
     //! UNDER CONSTRUCTION
 
     
-
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    //QVBoxLayout *mainLayout = new QVBoxLayout;
     // Добавляем информацию о роли и ID
-    setupUI(mainLayout);
+    //setupUI(mainLayout); 
 
 
 
@@ -114,29 +113,6 @@ void MainWindow::unpinItem()
     }
 }
 
-void MainWindow::hideItem()
-{
-    if (scene->selectedItems().isEmpty())
-        return;
-
-    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
-
-    for (QGraphicsItem *item : qAsConst(selectedItems)) {
-    item->hide(); //нужно добавить действия с тем, что это записывается в xml и передается клиентам, а не прячется у сервера
-    }
-}
-
-void MainWindow::showItem()
-{
-    if (scene->selectedItems().isEmpty())
-        return;
-
-    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
-
-    for (QGraphicsItem *item : qAsConst(selectedItems)) {
-    item->show(); //нужно добавить действия с тем, что это записывается в xml и передается клиентам, а не появляется у сервера
-    }
-}
 
 void MainWindow::zoomIn()
 {
@@ -196,12 +172,6 @@ void MainWindow::createActions() //TODO: Найти картинки!
     unpinAction = new QAction (QIcon(":/images/unpin.png"), tr("Unpin"), this);
     connect(unpinAction, &QAction::triggered, this, &MainWindow::unpinItem);
 
-    hideAction = new QAction (QIcon(":/images/hide.png"), tr("Hide"), this);
-    connect(hideAction, &QAction::triggered, this, &MainWindow::hideItem);
-
-    showAction = new QAction (QIcon(":/images/show.png"), tr("Show"), this);
-    connect(showAction, &QAction::triggered, this, &MainWindow::showItem);
-
     zoomInAction = new QAction (QIcon(":/images/zoomIn.png"), tr("Zoom in"), this);
     connect(zoomInAction, &QAction::triggered, this, &MainWindow::zoomIn);
 
@@ -221,8 +191,6 @@ void MainWindow::createMenus()
 
     itemMenu->addAction(pinAction);
     itemMenu->addAction(unpinAction);
-    itemMenu->addAction(hideAction);
-    itemMenu->addAction(showAction);
 }
 
 void MainWindow::createToolbars()
@@ -256,6 +224,9 @@ QWidget *MainWindow::createCellWidget(const QString &text, Item::ItemType type)
     return widget;
 }
 
+
+/* Текст накладывается. Глеб, чини
+
 void MainWindow::setupUI(QVBoxLayout *parentLayout) {
     QLabel *roleLabel = new QLabel(this);
     QLabel *roomIdLabel = new QLabel(this);
@@ -271,3 +242,5 @@ void MainWindow::setupUI(QVBoxLayout *parentLayout) {
     parentLayout->addWidget(roleLabel);
     parentLayout->addWidget(roomIdLabel);
 }
+
+*/

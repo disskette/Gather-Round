@@ -11,7 +11,7 @@ GridItem::GridItem(qreal cellSide,qreal awidth, qreal aheight, QGraphicsItem *pa
     for (int y=0; y<int(aheight); y+=cellSide)
     {
         QGraphicsLineItem* lineItem = new QGraphicsLineItem(0,y,awidth,y);
-        lineItem->setPen(QPen(Qt::black, 2));
+        lineItem->setPen(QPen(Qt::black, 0.2));
         lineItem ->setZValue(0.2); // Тот же zValue, что и у grid. Только у этих двух объектов zValue=0.2, ни у каких больше быть не может
         addToGroup(lineItem);
     }
@@ -20,7 +20,7 @@ GridItem::GridItem(qreal cellSide,qreal awidth, qreal aheight, QGraphicsItem *pa
     for (int x=0; x<int(awidth); x+=cellSide)
     {
         QGraphicsLineItem* lineItem = new QGraphicsLineItem(x,0,x,aheight);
-        lineItem->setPen(QPen(Qt::black, 2));
+        lineItem->setPen(QPen(Qt::black, 0.2));
         lineItem ->setZValue(0.2);
         addToGroup(lineItem);
     }

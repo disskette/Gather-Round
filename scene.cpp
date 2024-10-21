@@ -6,7 +6,7 @@
 
 
 Scene::Scene(QMenu *itemMenu, QObject *parent)
-    : QGraphicsScene(parent), currentScale(1)
+    : QGraphicsScene(parent), currentScale(1), offset_changed(false)
 {
     myItemMenu = itemMenu;
     myMode = MoveItem;
@@ -34,8 +34,13 @@ void Scene::setItemType(Item::ItemType type)
 
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    if (mouseEvent->button() != Qt::LeftButton)
-        return;
+    if (mouseEvent->button() != Qt::LeftButton) return;
+
+    for (QGraphicsItem *item : items()) {
+        item->setSelected(false);
+    } // Сняли выделение со всех элементов
+
+    QGraphicsItem* unknownItem;
 
     Item *item;
     switch (myMode) { // Оставим switch на случай, если добавятся ещё режимы
@@ -47,6 +52,12 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         item->setPos(mouseEvent->scenePos());
         emit itemInserted(item);
         break;
+    
+    case MoveItem:
+        unknownItem = itemAt(mouseEvent->scenePos(), QTransform());
+        if (unknownItem) unknownItem->setSelected(true); // За раз можно выделить только один объект
+        break;
+
     default:
         ;
     }
@@ -62,13 +73,21 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
         const qreal gridStep = 20;
 
-        // Вычисляем новое положение с привязкой к сетке
+        // Вычисляем новое положение
         for (QGraphicsItem *item : selectedItems) {
+            if(offset_changed==false)
+            {
+                if(item->type() == Item::Type) offset = event->scenePos() - dynamic_cast<Item*>(item)->pos();
+                else if(item->type() == MapItem::Type) offset = event->scenePos() - dynamic_cast<MapItem*>(item)->pos();
+                offset_changed = true; // Менять оффсет надо только один раз - сразу же после захвата.
+            }
             QPointF newPos(
                 round(mousePos.x() / gridStep) * gridStep,
                 round(mousePos.y() / gridStep) * gridStep
                 );
-            item->setPos(newPos);
+            QGraphicsItem::GraphicsItemFlags flags = item->flags();
+            //Тащим объект не за центр/левый угол, а за точку, где захватили
+            if (flags & QGraphicsItem::ItemIsMovable) item->setPos(newPos-offset);
         }
         event->accept();
     }
@@ -77,8 +96,9 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
 void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+    offset_changed=false; // Движение закончили - сняли запрет на изменение оффсета
     emit releaseMouseEventOccurred();
-    qDebug() << "ReleaseMouseEventOccured";
+    //qDebug() << "ReleaseMouseEventOccured";
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
 
