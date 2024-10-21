@@ -10,7 +10,7 @@ Client::Client(Scene *scene, QObject *parent)
         //!
         QString ip = "";
         for (int i = 2; i <= 254; ++i) {
-            for (int j = 0; i <= 1; ++i) {
+            for (int j = 0; j <= 1; ++j) {
                 //QString ip = QString("192.168.0.%1").arg(i);
                 //ip = QString("10.110.124.%1").arg(i);
                 ip = QString("192.168.%2.%1").arg(i).arg(j)
