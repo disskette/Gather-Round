@@ -3,19 +3,43 @@
 Client::Client(Scene *scene, QObject *parent)
         : QObject(parent), m_scene(scene), socket(new QTcpSocket(this))
     {
-        qDebug() << "mi w zope";
+
         connect(socket, &QTcpSocket::connected, this, &Client::sendInfo);
-        qDebug() << "mi w zope1";
         connect(socket, &QTcpSocket::readyRead, this, &Client::onReadyRead);
-        qDebug() << "mi w zope2";
         connect(socket, &QTcpSocket::disconnected, this, &Client::onDisconnected);
         //!
-        QString subnet = "192.168.0.4";
-        int port = 5702;
+        QString ip = "";
+        for (int i = 2; i <= 254; ++i) {
+            //QString ip = QString("192.168.0.%1").arg(i);
+            //ip = QString("10.110.124.%1").arg(i);
+            ip = QString("192.168.0.%1").arg(i);
+            
+            qDebug() << "Проверка соединения с" << ip;
+            
+            socket->connectToHost(ip, 5702); 
+            
+            if (socket->waitForConnected(100)) {
+                qDebug() << "Успешное соединение с" << ip;
+                //socket->disconnectFromHost();
+                break;
+            } else {
+                qDebug() << "Не удалось подключиться к" << ip << ":" << socket->errorString();
+
+            }
+        }
+
+        //!
+        //QString subnet = "10.110.124.18";
+        //int port = 5702;
 
         qDebug() << "mi ne ochen w zope";
 
-        socket->connectToHost(subnet, port);
+        //!socket->connectToHost(subnet, port);
+        socket->connectToHost(ip, 5702); 
+
+        qDebug() << "test connection?";
+        sendInfo();
+        qDebug() << "info sent?";
 
         /*QStringList parts = subnet.split('.');
         if (parts.size() != 4) {
@@ -54,10 +78,9 @@ Client::Client(Scene *scene, QObject *parent)
 
 void Client::sendInfo()
     {
-        //qDebug() << "Connected to server.";
+        qDebug() << "Connected to server.";
         // Send GET_ITEMS command
         socket->write("GET_ITEMS\n");
-        socket->flush();
     }
 
 

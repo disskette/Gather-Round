@@ -34,10 +34,9 @@ public slots:
 
 private slots:
     void handleNewConnection();
-
     void readRequest();
-
-    QByteArray serializeSceneToXML();
+    QByteArray serializeSceneToXML(); //!
+    void deleteSock();
 
 private:
     QTcpServer *m_server;

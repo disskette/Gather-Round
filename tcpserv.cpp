@@ -1,7 +1,7 @@
 #include "tcpserv.h"
 
 
-//! реализовать наблюдателей бля
+//! реализовать наблюдателей 
 
 Server::Server(Scene *scene, QObject *parent) 
         : QObject(parent), m_scene(scene)
@@ -22,19 +22,33 @@ void Server::handleNewConnection()
         m_clients.append(clientSocket);
         //!
         connect(clientSocket, &QTcpSocket::readyRead, this, &Server::readRequest);
-        connect(clientSocket, &QTcpSocket::disconnected, clientSocket, &QTcpSocket::deleteLater);
+        connect(clientSocket, &QTcpSocket::disconnected, this, &Server::deleteSock);
         qDebug() << "New client connected!";
     }
 
+void Server::deleteSock()
+{
+    QTcpSocket *client = qobject_cast<QTcpSocket* > (sender());
+    if (client)
+    {
+        m_clients.removeAt(m_clients.indexOf(client));
+    }
+}
+
 void Server::onReleaseMouseEvent()
 {
-    qDebug() << m_clients.size();
+    qDebug() << m_clients.size() << "Release mouse event detected";
     for (QTcpSocket* cli : m_clients)
     {
         qDebug() << "ANANAS";
         QByteArray xmlData = serializeSceneToXML();
         qDebug() << "ANANANAS";
-        cli->write(xmlData);
+        if (cli->state() == QAbstractSocket::ConnectedState) {
+            qDebug() << "Socket in connected state";
+            cli->write(xmlData);
+        } else {
+            qDebug() << "Socket not connected, cannot write";
+        }
         qDebug() << "ANANANANAS";
     }
 
@@ -75,6 +89,7 @@ QByteArray Server::serializeSceneToXML()
         foreach (QGraphicsItem *item, m_scene->items()) {
             if (!(item->pos().x() == 0 && item->pos().y() == 0)){
                 xmlWriter.writeStartElement("Item");
+                xmlWriter.writeTextElement("flag", (item->flags() & QGraphicsItem::ItemIsSelectable)? "true" : "false");
 
                 if(item->type()==Item::Type) //Обнаружили кружок //V
                 {

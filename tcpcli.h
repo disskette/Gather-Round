@@ -16,6 +16,10 @@ class Client : public QObject
 {
     Q_OBJECT
 
+private:
+    Scene *m_scene;
+
+
 public:
     //Client(const QString &subnet, quint16 port, QObject *parent = nullptr);
     Client(Scene *scene, QObject *parent = nullptr);
@@ -30,8 +34,7 @@ private slots:
 
 
 
-private:
-    Scene *m_scene;
+
     
 };
 

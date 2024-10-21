@@ -4,6 +4,8 @@
 #include "item.h"
 
 #include <QGraphicsScene>
+#include <QDebug>
+
 
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;

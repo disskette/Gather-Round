@@ -78,7 +78,7 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     emit releaseMouseEventOccurred();
-
+    qDebug() << "ReleaseMouseEventOccured";
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
 
